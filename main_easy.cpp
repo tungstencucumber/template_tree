@@ -13,9 +13,9 @@ using namespace std;
 // Но в реальном проекте используйте Boost.Test или gtest или ещё какой-нибудь аналог.
 
 // Подключите свой хэдер вместо VerySimpleList.h
-#include "VerySimpleList.h"
+#include "template_tree.h"
 // Вместо VerySimpleList укажите имя своего класса, который тестируем
-#define IMPL VerySimpleList
+#define IMPL Fleet
 
 // Больше ничего править не требуется, просто соберитесь и запуститесь с этим main-ом с тестами
 

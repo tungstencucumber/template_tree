@@ -1,7 +1,10 @@
-#include <template_tree.h>
+#include "template_tree.h"
 
+template<typename T>
+Vessel<T>::Vessel() {}
 
-Vessel::Vessel(T i)
+template<typename T>
+Vessel<T>::Vessel(T i)
 {
 	this->id = i;
 	this->level = 0;
@@ -10,12 +13,17 @@ Vessel::Vessel(T i)
 	this->right = NULL;
 }
 
-T Vessel::getID()
+template<typename T>
+Vessel<T>::~Vessel() {}
+
+template<typename T>
+T Vessel<T>::getID()
 {
 	return this->id;
 }
 
-Vessel* Vessel::attach_to_fleet(Vessel* ship)
+template<typename T>
+Vessel<T>* Vessel<T>::attach_to_fleet(Vessel* ship)
 {
 	if(this->id > ship->id)
 	{
@@ -38,7 +46,8 @@ Vessel* Vessel::attach_to_fleet(Vessel* ship)
 	return this;
 }
 
-bool Vessel::find_vessel(T i)
+template<typename T>
+bool Vessel<T>::find_vessel(T i)
 {
 	if (this->id == i)
 		return true;
@@ -49,7 +58,8 @@ bool Vessel::find_vessel(T i)
 	return false;
 }
 
-Vessel* Vessel::detach_from_fleet(T target_id) {
+template<typename T>
+Vessel<T>* Vessel<T>::detach_from_fleet(T target_id) {
 	if (target_id < this->id)
 		this->left->detach_from_fleet(target_id);
 	else if (target_id > this->id)
@@ -74,16 +84,18 @@ Vessel* Vessel::detach_from_fleet(T target_id) {
 	return this;
 }
 
-void Vessel::report()
+template<typename T>
+void Vessel<T>::report()
 {
 	if (this->left != NULL)
 		this->left->report();
-	cout << this->getID() << endl;
+	std::cout << this->getID() << std::endl;
 	if(this->right != NULL)
 		this->right->report();
 }
 
-void Vessel::dismiss_fleet()
+template<typename T>
+void Vessel<T>::dismiss_fleet()
 {
 	while (this->left != NULL)
 		this->left->detach_from_fleet(this->left->id);
@@ -92,7 +104,10 @@ void Vessel::dismiss_fleet()
 }
 
 
-void Fleet::attach_to_fleet(Vessel* ship)
+
+
+template<typename T>
+void Fleet<T>::attach_to_fleet(Vessel<T>* ship)
 {
 	if (root == NULL) {
 		root = ship;
@@ -101,51 +116,59 @@ void Fleet::attach_to_fleet(Vessel* ship)
 	this->root = root->attach_to_fleet(ship);
 }
 
-bool Fleet::find_vessel(T i)
+template<typename T>
+bool Fleet<T>::find_vessel(T i)
 {
 	return this->root->find_vessel(i);
 }
 
-void Fleet::detach_from_fleet(T target_id)
+template<typename T>
+void Fleet<T>::detach_from_fleet(T target_id)
 {
 	if (this->find_vessel(target_id) == true)
 		this->root = root->detach_from_fleet(target_id);
 }
 
-void Fleet::dismiss_fleet() {
+template<typename T>
+void Fleet<T>::dismiss_fleet()
+{
 	root->dismiss_fleet();
 	delete root;
 }
 
-Fleet::Fleet()
+template<typename T>
+Fleet<T>::Fleet()
 {
 	this->root = NULL;
 }
 
-~Fleet::Fleet()
+template<typename T>
+Fleet<T>::~Fleet()
 {
 	dismiss_fleet();
 }
 
-void Fleet::insert(T value)
+template<typename T>
+void Fleet<T>::insert(const T& value)
 {
-	Vessel* t = new Vessel(value);
+	Vessel<T>* t = new Vessel<T>(value);
 	this->attach_to_fleet(t);
 }
 
-bool exists(T value)
+template<typename T>
+bool Fleet<T>::exists(const T& value) const
 {
   return this->find_vessel(value);
 }
 
-void Fleet::remove(T value)
+template<typename T>
+void Fleet<T>::remove(const T& value)
 {
   this->root->detach_from_fleet(value);
 }
 
-void Fleet::print()
+template<typename T>
+void Fleet<T>::print()
 {
 	this->root->report();
 }
-
-};

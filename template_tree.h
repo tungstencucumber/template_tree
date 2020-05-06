@@ -1,6 +1,7 @@
 #ifndef TEMPLATE_TREE_H
 #define TEMPLATE_TREE_H
-#include <container.h>
+#include "container.h"
+#include <iostream>
 
 template<typename T>
 class Vessel
@@ -12,24 +13,26 @@ private:
 	Vessel* left;
 	Vessel* right;
 public:
+	Vessel();
 	Vessel(T i);
 	~Vessel();
 
 	T getID();
-	Vessel* attach_to_fleet(Vessel* ship);
+	Vessel<T>* attach_to_fleet(Vessel<T>* ship);
   bool find_vessel(T i);
-	Vessel* detach_from_fleet(T target_id);
+	Vessel<T>* detach_from_fleet(T target_id);
 	void report();
-	void dismiss_fleet()
+	void dismiss_fleet();
 };
 
-class Fleet: public Container
+template<typename T>
+class Fleet: public Container<T>
 {
 private:
-	Vessel* root;
+	Vessel<T>* root;
 protected:
 
-	void attach_to_fleet(Vessel* ship);
+	void attach_to_fleet(Vessel<T>* ship);
 	bool find_vessel(T i);
 	void detach_from_fleet(T target_id);
 	void dismiss_fleet();
@@ -38,9 +41,9 @@ public:
 
 	Fleet();
 	~Fleet();
-	void insert(T value);
-  bool exists(T value);
-  void remove(T value);
+	void insert(const T& value);
+  bool exists(const T& value) const;
+  void remove(const T& value);
   void print();
 
 };
