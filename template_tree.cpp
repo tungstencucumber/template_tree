@@ -4,7 +4,7 @@ template<typename T>
 Vessel<T>::Vessel() {}
 
 template<typename T>
-Vessel<T>::Vessel(T i)
+Vessel<T>::Vessel(const T& i)
 {
 	this->id = i;
 	this->level = 0;
@@ -17,7 +17,7 @@ template<typename T>
 Vessel<T>::~Vessel() {}
 
 template<typename T>
-T Vessel<T>::getID()
+T Vessel<T>::getID() const
 {
 	return this->id;
 }
@@ -47,7 +47,7 @@ Vessel<T>* Vessel<T>::attach_to_fleet(Vessel* ship)
 }
 
 template<typename T>
-bool Vessel<T>::find_vessel(T i)
+bool Vessel<T>::find_vessel(const T& i) const
 {
 	if (this->id == i)
 		return true;
@@ -59,7 +59,7 @@ bool Vessel<T>::find_vessel(T i)
 }
 
 template<typename T>
-Vessel<T>* Vessel<T>::detach_from_fleet(T target_id) {
+Vessel<T>* Vessel<T>::detach_from_fleet(const T& target_id) {
 	if (target_id < this->id)
 		this->left->detach_from_fleet(target_id);
 	else if (target_id > this->id)
@@ -85,7 +85,7 @@ Vessel<T>* Vessel<T>::detach_from_fleet(T target_id) {
 }
 
 template<typename T>
-void Vessel<T>::report()
+void Vessel<T>::report() const
 {
 	if (this->left != NULL)
 		this->left->report();
@@ -117,13 +117,13 @@ void Fleet<T>::attach_to_fleet(Vessel<T>* ship)
 }
 
 template<typename T>
-bool Fleet<T>::find_vessel(T i)
+bool Fleet<T>::find_vessel(const T& i) const
 {
 	return this->root->find_vessel(i);
 }
 
 template<typename T>
-void Fleet<T>::detach_from_fleet(T target_id)
+void Fleet<T>::detach_from_fleet(const T& target_id)
 {
 	if (this->find_vessel(target_id) == true)
 		this->root = root->detach_from_fleet(target_id);
@@ -168,7 +168,12 @@ void Fleet<T>::remove(const T& value)
 }
 
 template<typename T>
-void Fleet<T>::print()
+void Fleet<T>::print() const
 {
 	this->root->report();
 }
+
+template class Vessel<int>;
+template class Vessel<string>;
+template class Fleet<int>;
+template class Fleet<string>;
