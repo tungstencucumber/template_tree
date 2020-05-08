@@ -167,6 +167,7 @@ void Fleet<T>::dismiss_fleet()
 {
 	root->dismiss_fleet();
 	root = nullptr;
+	size = 0;
 }
 
 template<typename T>
@@ -204,18 +205,21 @@ bool Fleet<T>::exists(const T& value) const
 template<typename T>
 void Fleet<T>::remove(const T& value)
 {
-	size--;
-	if(value == root->getID())
+	if(this->exists(value) == true)
 	{
-		if(this->size == 0)
+		size--;
+		if(value == root->getID())
 		{
-			delete root;
-			root = nullptr;
-			return;
+			if(this->size == 0)
+			{
+				delete root;
+				root = nullptr;
+				return;
+			}
+			else root = root->left_rotation();
 		}
-		else root = root->left_rotation();
+	  this->root->detach_from_fleet(value);
 	}
-  this->root->detach_from_fleet(value);
 }
 
 template<typename T>
