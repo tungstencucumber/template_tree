@@ -71,7 +71,9 @@ Vessel<T>* Vessel<T>::detach_from_fleet(const T& target_id) {
 				if (this->right != NULL)
 					this->right->parent = this->parent;
 			}
+			Vessel* replaced = this->right;
 			delete this;
+			return replaced;
 		} else {
 			Vessel* replaced = this->left;
 			while (replaced->right != NULL)
@@ -79,9 +81,9 @@ Vessel<T>* Vessel<T>::detach_from_fleet(const T& target_id) {
 			this->id = replaced->id;
 			replaced->parent->right = NULL;
 			delete replaced;
+			return this;
 		}
 	}
-	return this;
 }
 
 template<typename T>
@@ -125,8 +127,9 @@ bool Fleet<T>::find_vessel(const T& i) const
 template<typename T>
 void Fleet<T>::detach_from_fleet(const T& target_id)
 {
-	if (this->find_vessel(target_id) == true)
+	if (this->find_vessel(target_id) == true) {
 		this->root = root->detach_from_fleet(target_id);
+	}
 }
 
 template<typename T>
@@ -165,6 +168,7 @@ template<typename T>
 void Fleet<T>::remove(const T& value)
 {
   this->root->detach_from_fleet(value);
+	cout << "Root changed to " << root->getID() << endl;
 }
 
 template<typename T>
