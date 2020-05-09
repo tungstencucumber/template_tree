@@ -93,7 +93,9 @@ Vessel<T>* Vessel<T>::detach_from_fleet(const T& target_id) {
 			while (replaced->right != nullptr)
 				replaced = replaced->right;
 			this->id = replaced->id;
-			replaced->parent->right = nullptr;
+			if(replaced == replaced->parent->right)
+				replaced->parent->right = nullptr;
+			else replaced->parent->left = nullptr;
 			delete replaced;
 		}
 	}
@@ -129,6 +131,7 @@ Vessel<T>* Vessel<T>::left_rotation()
 		if(right != nullptr)
 			right->parent = this;
 		t->left = this;
+		t->parent = this->parent;
 		this->parent = t;
 		return t;
 	}
