@@ -169,6 +169,7 @@ template<typename T>
 void Fleet<T>::dismiss_fleet()
 {
 	root->dismiss_fleet();
+	delete root;
 	root = nullptr;
 	size = 0;
 }
